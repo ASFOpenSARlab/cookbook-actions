@@ -196,7 +196,6 @@ jobs:
           inputs.environment_manager == 'pixi'
         run: |
           pixi add jupyter-book sphinx-pythia-theme
-          pixi add --pypi "binderbot @ git+https://github.com/pangeo-gallery/binderbot.git"
           pixi list
 
       - name: Get paths to notebook files
