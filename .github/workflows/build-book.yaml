@@ -195,7 +195,6 @@ jobs:
         if: |
           inputs.environment_manager == 'pixi'
         run: |
-          pixi init
           pixi add jupyter-book sphinx-pythia-theme
           pixi add --pypi "binderbot @ git+https://github.com/pangeo-gallery/binderbot.git"
           pixi list
