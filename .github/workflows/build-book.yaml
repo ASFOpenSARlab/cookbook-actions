@@ -281,6 +281,10 @@ jobs:
             ${{ inputs.build_command }}
           fi
 
+      - name: Add .nojekyll to built site
+        run: |
+          touch "${{ inputs.path_to_notebooks }}/${{ inputs.output_path }}/.nojekyll"
+
       - name: Zip the book
         run: |
           set -x
