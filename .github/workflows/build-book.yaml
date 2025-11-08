@@ -195,7 +195,7 @@ jobs:
         if: |
           inputs.environment_manager == 'pixi'
         run: |
-          pixi add jupyter-book sphinx-pythia-theme mystmd
+          pixi add jupyter-book sphinx-pythia-theme
           pixi list
 
       - name: Get paths to notebook files
@@ -275,7 +275,11 @@ jobs:
           SECRETS_VARS: ${{ toJson(secrets) }}
         run: |
           cd ${{ inputs.path_to_notebooks }}
-          ${{ inputs.build_command }}
+          if [ "${{ inputs.environment_manager }}" = "pixi" ]; then
+            pixi run ${{ inputs.build_command }}
+          else
+            ${{ inputs.build_command }}
+          fi
 
       - name: Zip the book
         run: |
