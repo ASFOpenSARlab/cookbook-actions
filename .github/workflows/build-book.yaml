@@ -179,10 +179,11 @@ jobs:
         uses: prefix-dev/setup-pixi@v0.9.3
         with:
           run-install: true  
+          cache: true
       
       - name: Create book build environment (conda)
         if: |
-          steps.cache.outputs.cache-hit != 'true' &&
+          # steps.cache.outputs.cache-hit != 'true' &&
           steps.parse_config.outputs.execute_notebooks == 'binder' &&
           inputs.environment_manager == 'conda'
         run: |
@@ -193,7 +194,7 @@ jobs:
 
       - name: Create book build environment (pixi)
         if: |
-          steps.cache.outputs.cache-hit != 'true' &&
+          # steps.cache.outputs.cache-hit != 'true' &&
           steps.parse_config.outputs.execute_notebooks == 'binder' &&
           inputs.environment_manager == 'pixi'
         run: |
