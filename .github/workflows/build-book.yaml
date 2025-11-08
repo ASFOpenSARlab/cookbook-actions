@@ -3,7 +3,7 @@ name: build-book
 on:
   workflow_call:
     inputs:
-      package_manager: 
+      environment_manager: 
         description: 'Package Manager (conda or pixi)'
         required: false
         type: string
@@ -168,14 +168,14 @@ jobs:
       
       - name: Setup environment with micromamba
         if: |
-          inputs.package_manager == 'conda'
+          inputs.environment_manager == 'conda'
         uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: ${{ inputs.environment_file }}
 
       - name: Setup environment with Pixi
         if: | 
-          inputs.package_manager == 'pixi'
+          inputs.environment_manager == 'pixi'
         uses: prefix-dev/setup-pixi@v0.9.3
         with:
           cache: true
