@@ -3,6 +3,12 @@ name: build-book
 on:
   workflow_call:
     inputs:
+      package_manager: 
+        description: 'conda or pixi'
+        required: false
+        type: choice
+        options: [conda, pixi]
+        default: conda
       environment_name:
         description: 'Name of conda environment to activate (NO LONGER USED)'
         required: false
@@ -144,12 +150,17 @@ jobs:
           echo ${{ steps.parse_config.outputs.execute_notebooks }}
           echo ${{ steps.parse_config.outputs.binderhub_url }}
           echo ${{ steps.parse_config.outputs.timeout }}
-
-      - name: Test for environment change
-        id: env_change
+        
+      - name: Detect env changes (pixi vs conda)
+        id: changed
         uses: tj-actions/changed-files@v47
         with:
-          files: ${{ inputs.environment_file }}
+          files_yaml: |
+            pixi:
+              - '**/pixi.toml'
+              - '**/pixi.lock'
+            conda:
+              - ${{ inputs.environment_file }}
 
       - name: Echo environment change test result
         run: |
@@ -157,9 +168,19 @@ jobs:
           echo ${{ steps.env_change.outputs.any_changed }}
       
       - name: Setup environment with micromamba
+        if: |
+          inputs.package_manager == conda
         uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: ${{ inputs.environment_file }}
+
+      - name: Setup environment with Pixi
+        if: | 
+          inputs.package_manager == pixi
+        uses: prefix-dev/setup-pixi@v0.9.3
+        with:
+          cache: true
+          run-install: true  
       
       - name: Create book build environment
         if: |
