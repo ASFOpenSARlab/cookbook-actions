@@ -182,24 +182,20 @@ jobs:
       
       - name: Create book build environment (conda)
         if: |
-          ${{
-            (inputs.use_cached_environment != 'true' || steps.cache.outputs.cache-hit != 'true') &&
-            ((steps.parse_config.outputs.execute_notebooks || '') == 'binder') &&
-            ((inputs.environment_manager == '' || 'conda') 
-          }}
+          steps.cache.outputs.cache-hit != 'true') &&
+          steps.parse_config.outputs.execute_notebooks == 'binder' &&
+          inputs.environment_manager == 'conda'
         run: |
           conda install -c conda-forge jupyter-book pip
           conda install sphinx-pythia-theme
-          pip install git+https://github.com/pangeo-gallery/binderbot.gitß
+          pip install git+https://github.com/pangeo-gallery/binderbot.git
           conda list
 
       - name: Create book build environment (pixi)
         if: |
-          ${{ 
-            (inputs.use_cached_environment != 'true' || steps.cache.outputs.cache-hit != 'true') &&
-            ((steps.parse_config.outputs.execute_notebooks || '') == 'binder') &&
-            ((inputs.environment_manager || '') == 'pixi')
-          }}
+          steps.cache.outputs.cache-hit != 'true') &&
+          steps.parse_config.outputs.execute_notebooks == 'binder' &&
+          inputs.environment_manager == 'pixi'
         run: |
           pixi init
           pixi add jupyter-book sphinx-pythia-theme
