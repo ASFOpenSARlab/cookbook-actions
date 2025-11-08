@@ -193,7 +193,6 @@ jobs:
 
       - name: Create book build environment (pixi)
         if: |
-          steps.parse_config.outputs.execute_notebooks == 'binder' &&
           inputs.environment_manager == 'pixi'
         run: |
           pixi init
