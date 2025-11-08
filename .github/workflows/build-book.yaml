@@ -4,10 +4,9 @@ on:
   workflow_call:
     inputs:
       package_manager: 
-        description: 'conda or pixi'
+        description: 'Package Manager (conda or pixi)'
         required: false
-        type: choice
-        options: [conda, pixi]
+        type: string
         default: conda
       environment_name:
         description: 'Name of conda environment to activate (NO LONGER USED)'
