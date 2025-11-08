@@ -195,7 +195,7 @@ jobs:
         if: |
           inputs.environment_manager == 'pixi'
         run: |
-          pixi add jupyter-book sphinx-pythia-theme myst
+          pixi add jupyter-book sphinx-pythia-theme mystmd
           pixi list
 
       - name: Get paths to notebook files
