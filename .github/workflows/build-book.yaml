@@ -183,7 +183,6 @@ jobs:
       
       - name: Create book build environment (conda)
         if: |
-          # steps.cache.outputs.cache-hit != 'true' &&
           steps.parse_config.outputs.execute_notebooks == 'binder' &&
           inputs.environment_manager == 'conda'
         run: |
@@ -194,7 +193,6 @@ jobs:
 
       - name: Create book build environment (pixi)
         if: |
-          # steps.cache.outputs.cache-hit != 'true' &&
           steps.parse_config.outputs.execute_notebooks == 'binder' &&
           inputs.environment_manager == 'pixi'
         run: |
