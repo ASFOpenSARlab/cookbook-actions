@@ -178,7 +178,6 @@ jobs:
           inputs.environment_manager == 'pixi'
         uses: prefix-dev/setup-pixi@v0.9.3
         with:
-          cache: true
           run-install: true  
       
       - name: Create book build environment (conda)
