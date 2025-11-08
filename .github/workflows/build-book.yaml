@@ -168,14 +168,14 @@ jobs:
       
       - name: Setup environment with micromamba
         if: |
-          inputs.package_manager == "conda"
+          inputs.package_manager == 'conda'
         uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: ${{ inputs.environment_file }}
 
       - name: Setup environment with Pixi
         if: | 
-          inputs.package_manager == "pixi"
+          inputs.package_manager == 'pixi'
         uses: prefix-dev/setup-pixi@v0.9.3
         with:
           cache: true
