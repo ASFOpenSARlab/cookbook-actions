@@ -196,6 +196,7 @@ jobs:
           inputs.environment_manager == 'pixi'
         run: |
           pixi add jupyter-book sphinx-pythia-theme
+          pixi add "pip:git+https://github.com/pangeo-gallery/binderbot.git"
           pixi list
 
       - name: Get paths to notebook files
@@ -299,3 +300,4 @@ jobs:
         with:
           name: ${{ inputs.artifact_name }}
           path: ./book.zip
+
