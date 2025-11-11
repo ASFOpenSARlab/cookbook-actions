@@ -238,31 +238,32 @@ jobs:
           echo "using the existing binder image from the main branch"
           python -m binderbot.cli --binder-url ${{ steps.parse_config.outputs.binderhub_url }} --repo ${{ github.repository }} --ref main --nb-timeout ${{ steps.parse_config.outputs.timeout }} $NOTEBOOKS --pass-env-var ARM_USERNAME --pass-env-var ARM_PASSWORD
 
-      - name: Execute notebooks via binderbot using existing image (pixi)
-        if: |
-          ( steps.parse_config.outputs.execute_notebooks == 'binder'
-          && steps.env_change.outputs.any_changed != 'true' )
-          && inputs.environment_manager == 'pixi'
-        shell: 'pixi run -e build -- bash -leo pipefail {0}'
-        env:
-          ARM_USERNAME: ${{ secrets.ARM_USERNAME }}
-          ARM_PASSWORD: ${{ secrets.ARM_PASSWORD }}
-          AQS_USERNAME: ${{ secrets.AQS_USERNAME }}
-          AQS_KEY: ${{ secrets.AQS_KEY }}
-          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
-          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
-        run: |
-          NOTEBOOKS=$(cat notebook_paths)
-          echo 'Retrieved binderhub_url: ${{ steps.parse_config.outputs.binderhub_url }}'
-          echo "We will now execute these notebooks: $NOTEBOOKS"
-          echo "using the existing binder image from the main branch"
-          python -m binderbot.cli --binder-url ${{ steps.parse_config.outputs.binderhub_url }} --repo ${{ github.repository }} --ref main --nb-timeout ${{ steps.parse_config.outputs.timeout }} $NOTEBOOKS --pass-env-var ARM_USERNAME --pass-env-var ARM_PASSWORD
+      # - name: Execute notebooks via binderbot using existing image (pixi)
+      #   if: |
+      #     ( steps.parse_config.outputs.execute_notebooks == 'binder'
+      #     && steps.env_change.outputs.any_changed != 'true' )
+      #     && inputs.environment_manager == 'pixi'
+      #   shell: 'pixi run -e build -- bash -leo pipefail {0}'
+      #   env:
+      #     ARM_USERNAME: ${{ secrets.ARM_USERNAME }}
+      #     ARM_PASSWORD: ${{ secrets.ARM_PASSWORD }}
+      #     AQS_USERNAME: ${{ secrets.AQS_USERNAME }}
+      #     AQS_KEY: ${{ secrets.AQS_KEY }}
+      #     EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+      #     EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+      #   run: |
+      #     NOTEBOOKS=$(cat notebook_paths)
+      #     echo 'Retrieved binderhub_url: ${{ steps.parse_config.outputs.binderhub_url }}'
+      #     echo "We will now execute these notebooks: $NOTEBOOKS"
+      #     echo "using the existing binder image from the main branch"
+      #     python -m binderbot.cli --binder-url ${{ steps.parse_config.outputs.binderhub_url }} --repo ${{ github.repository }} --ref main --nb-timeout ${{ steps.parse_config.outputs.timeout }} $NOTEBOOKS --pass-env-var ARM_USERNAME --pass-env-var ARM_PASSWORD
 
 
       - name: Execute notebooks via binderbot using new image with latest environment
         if: |
             ( steps.parse_config.outputs.execute_notebooks == 'binder'
             && steps.env_change.outputs.any_changed == 'true' )
+            && inputs.environment_manager == 'conda'
         env:
           ARM_USERNAME: ${{ secrets.ARM_USERNAME }}
           ARM_PASSWORD: ${{ secrets.ARM_PASSWORD }}
@@ -276,6 +277,27 @@ jobs:
           echo "We will now execute these notebooks: $NOTEBOOKS"
           echo "using the updated environment file in this branch to build a new image"
           python -m binderbot.cli --binder-url ${{ steps.parse_config.outputs.binderhub_url }} --repo ${{ github.actor }}/$CI_REPOSITORY_NAME --ref $CI_ACTION_REF_NAME --nb-timeout ${{ steps.parse_config.outputs.timeout }} $NOTEBOOKS --pass-env-var ARM_USERNAME --pass-env-var ARM_PASSWORD
+
+      - name: Execute notebooks via binderbot using new image with latest environment
+        if: |
+            ( steps.parse_config.outputs.execute_notebooks == 'binder'
+            && steps.env_change.outputs.any_changed == 'true' )
+            && inputs.environment_manager == 'pixi'
+        shell: 'pixi run -e build -- bash -leo pipefail {0}'
+        env:
+          ARM_USERNAME: ${{ secrets.ARM_USERNAME }}
+          ARM_PASSWORD: ${{ secrets.ARM_PASSWORD }}
+          AQS_USERNAME: ${{ secrets.AQS_USERNAME }}
+          AQS_KEY: ${{ secrets.AQS_KEY }}
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
+        run: |
+          NOTEBOOKS=$(cat notebook_paths)
+          echo 'Retrieved binder_url: ${{ steps.parse_config.outputs.binderhub_url }}'
+          echo "We will now execute these notebooks: $NOTEBOOKS"
+          echo "using the updated environment file in this branch to build a new image"
+          python -m binderbot.cli --binder-url ${{ steps.parse_config.outputs.binderhub_url }} --repo ${{ github.actor }}/$CI_REPOSITORY_NAME --ref $CI_ACTION_REF_NAME --nb-timeout ${{ steps.parse_config.outputs.timeout }} $NOTEBOOKS --pass-env-var ARM_USERNAME --pass-env-var ARM_PASSWORD
+
 
       - name: Disable notebook execution during jupyterbook build
         if: |
