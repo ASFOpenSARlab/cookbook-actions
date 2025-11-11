@@ -296,7 +296,7 @@ jobs:
           echo 'Retrieved binder_url: ${{ steps.parse_config.outputs.binderhub_url }}'
           echo "We will now execute these notebooks: $NOTEBOOKS"
           echo "using the updated environment file in this branch to build a new image"
-          python -m binderbot.cli --binder-url ${{ steps.parse_config.outputs.binderhub_url }} --repo ${{ github.actor }}/$CI_REPOSITORY_NAME --ref $CI_ACTION_REF_NAME --nb-timeout ${{ steps.parse_config.outputs.timeout }} $NOTEBOOKS --pass-env-var ARM_USERNAME --pass-env-var ARM_PASSWORD
+          python -m binderbot.cli --binder-url ${{ steps.parse_config.outputs.binderhub_url }} --repo ${{ github.repository }}/$CI_REPOSITORY_NAME --ref $CI_ACTION_REF_NAME --nb-timeout ${{ steps.parse_config.outputs.timeout }} $NOTEBOOKS --pass-env-var ARM_USERNAME --pass-env-var ARM_PASSWORD
 
 
       - name: Disable notebook execution during jupyterbook build
