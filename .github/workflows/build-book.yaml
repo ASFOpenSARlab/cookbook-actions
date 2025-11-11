@@ -197,6 +197,8 @@ jobs:
         run: |
           pixi add jupyter-book sphinx-pythia-theme
           pixi add "pip:git+https://github.com/pangeo-gallery/binderbot.git"
+          pixi run -e default -- python -m pip install --no-deps --no-build-isolation \
+            git+https://github.com/pangeo-gallery/binderbot.git@32c96df
           pixi list
 
       - name: Get paths to notebook files
