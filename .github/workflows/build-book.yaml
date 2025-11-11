@@ -195,11 +195,13 @@ jobs:
         if: |
           inputs.environment_manager == 'pixi'
         run: |
+          pixi env create build -c conda-forge python=3.10 pip
           pixi add jupyter-book sphinx-pythia-theme
           pixi add Click>=7.0 aiohttp yarl structlog nbformat nbconvert async_timeout
-          pixi run -e default -- python -m pip install --no-deps --no-build-isolation \
+          pixi run -e build -- python -m pip install --no-deps --no-build-isolation \
             git+https://github.com/pangeo-gallery/binderbot.git@32c96df
           pixi list
+
 
       - name: Get paths to notebook files
         if: |
@@ -240,7 +242,7 @@ jobs:
           ( steps.parse_config.outputs.execute_notebooks == 'binder'
           && steps.env_change.outputs.any_changed != 'true' )
           && inputs.environment_manager == 'pixi'
-        shell: 'pixi run -e default -- bash -leo pipefail {0}'
+        shell: 'pixi run -e build -- bash -leo pipefail {0}'
         env:
           ARM_USERNAME: ${{ secrets.ARM_USERNAME }}
           ARM_PASSWORD: ${{ secrets.ARM_PASSWORD }}
@@ -301,7 +303,7 @@ jobs:
         run: |
           cd ${{ inputs.path_to_notebooks }}
           if [ "${{ inputs.environment_manager }}" = "pixi" ]; then
-            pixi run ${{ inputs.build_command }}
+            pixi run -e build ${{ inputs.build_command }}
           else
             ${{ inputs.build_command }}
           fi
