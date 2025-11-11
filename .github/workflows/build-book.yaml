@@ -195,7 +195,7 @@ jobs:
         if: |
           inputs.environment_manager == 'pixi'
         run: |
-          pixi add jupyter-book sphinx-pythia-theme
+          pixi add jupyter-book sphinx-pythia-theme click
           pixi run -e default -- python -m pip install --no-deps --no-build-isolation \
             git+https://github.com/pangeo-gallery/binderbot.git@32c96df
           pixi list
@@ -249,7 +249,7 @@ jobs:
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
         run: |
           NOTEBOOKS=$(cat notebook_paths)
-          echo 'Retrieved binder_url: ${{ steps.parse_config.outputs.binderhub_url }}'
+          echo 'Retrieved binderhub_url: ${{ steps.parse_config.outputs.binderhub_url }}'
           echo "We will now execute these notebooks: $NOTEBOOKS"
           echo "using the existing binder image from the main branch"
           python -m binderbot.cli --binder-url ${{ steps.parse_config.outputs.binderhub_url }} --repo ${{ github.repository }} --ref main --nb-timeout ${{ steps.parse_config.outputs.timeout }} $NOTEBOOKS --pass-env-var ARM_USERNAME --pass-env-var ARM_PASSWORD
