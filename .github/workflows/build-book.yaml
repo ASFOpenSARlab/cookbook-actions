@@ -196,7 +196,7 @@ jobs:
           inputs.environment_manager == 'pixi'
         run: |
           pixi add -f build "python<3.11" pip jupyter-book sphinx-pythia-theme \
-            "Click>=7.0" aiohttp yarl structlog nbformat nbconvert async_timeout
+            "Click>=7.0" aiohttp yarl structlog nbformat nbconvert async_timeout mystmd jupyterlab-myst
           pixi add --pypi -f build \
             --git https://github.com/pangeo-gallery/binderbot.git \
             --rev 32c96df \
@@ -282,7 +282,7 @@ jobs:
         if: |
             ( steps.parse_config.outputs.execute_notebooks == 'binder'
             && steps.env_change.outputs.any_changed == 'true' )
-            && inputs.environment_manager == 'pixi'
+            || inputs.environment_manager == 'pixi'
         shell: 'pixi run -e build -- bash -leo pipefail {0}'
         env:
           ARM_USERNAME: ${{ secrets.ARM_USERNAME }}
