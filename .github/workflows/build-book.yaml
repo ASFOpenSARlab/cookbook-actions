@@ -195,7 +195,7 @@ jobs:
         if: |
           inputs.environment_manager == 'pixi'
         run: |
-          pixi add -f build python<3.11 pip jupyter-book sphinx-pythia-theme Click>=7.0 aiohttp yarl structlog nbformat nbconvert async_timeout
+          pixi add -f build "python<3.11" pip jupyter-book sphinx-pythia-theme "Click>=7.0" aiohttp yarl structlog nbformat nbconvert async_timeout
           pixi add --pypi -f build -g https://github.com/pangeo-gallery/binderbot.git 32c96df
           pixi workspace environment add -f build build 
           pixi list
