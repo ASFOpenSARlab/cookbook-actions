@@ -195,13 +195,10 @@ jobs:
         if: |
           inputs.environment_manager == 'pixi'
         run: |
-          pixi env create build -c conda-forge python=3.10 pip
-          pixi add jupyter-book sphinx-pythia-theme
-          pixi add Click>=7.0 aiohttp yarl structlog nbformat nbconvert async_timeout
-          pixi run -e build -- python -m pip install --no-deps --no-build-isolation \
-            git+https://github.com/pangeo-gallery/binderbot.git@32c96df
+          pixi add -f build python<3.11 pip jupyter-book sphinx-pythia-theme Click>=7.0 aiohttp yarl structlog nbformat nbconvert async_timeout
+          pixi add --pypi -f build -g https://github.com/pangeo-gallery/binderbot.git 32c96df
+          pixi workspace environment add -f build build 
           pixi list
-
 
       - name: Get paths to notebook files
         if: |
