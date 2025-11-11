@@ -195,8 +195,9 @@ jobs:
         if: |
           inputs.environment_manager == 'pixi'
         run: |
-          pixi add jupyter-book sphinx-pythia-theme async_timeout
-          pixi run -e default -- python -m pip install --no-build-isolation \
+          pixi add jupyter-book sphinx-pythia-theme
+          pixi add Click>=7.0 aiohttp yarl structlog nbformat nbconvert
+          pixi run -e default -- python -m pip install --no-deps --no-build-isolation \
             git+https://github.com/pangeo-gallery/binderbot.git@32c96df
           pixi list
 
