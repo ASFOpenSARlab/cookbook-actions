@@ -195,7 +195,7 @@ jobs:
         if: |
           inputs.environment_manager == 'pixi'
         run: |
-          pixi add -f build "python<3.11" pip jupyter-book sphinx-pythia-theme \
+          pixi add -f build "python<3.13" pip jupyter-book sphinx-pythia-theme \
             "Click>=7.0" aiohttp yarl structlog nbformat nbconvert async_timeout mystmd jupyterlab-myst
           pixi add --pypi -f build \
             --git https://github.com/pangeo-gallery/binderbot.git \
