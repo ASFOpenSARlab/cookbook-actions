@@ -153,9 +153,9 @@ jobs:
       - name: Create book build environment (pixi)
         if: inputs.environment_manager == 'pixi'
         run: |
-          pixi workspace environment add -f build build
           pixi add -f build "python>=3.12,<3.13" pip jupyter-book sphinx-pythia-theme \
             "click>=7.0" aiohttp yarl structlog nbformat nbconvert async_timeout mystmd jupyterlab-myst
+          pixi workspace environment add -f build build
           pixi list -e build
 
       - name: Build the book
